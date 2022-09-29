@@ -3221,26 +3221,28 @@ func checkRoleFeatureSupport(role types.Role) error {
 		return trace.AccessDenied("role option pin_source_ip is only available in enterprise subscriptions")
 	}
 
-	switch {
-	case !features.AccessControls && options.MaxSessions > 0:
-		return trace.AccessDenied(
-			"role option max_sessions is only available in enterprise subscriptions")
-	case !features.AdvancedAccessWorkflows &&
-		(options.RequestAccess == types.RequestStrategyReason || options.RequestAccess == types.RequestStrategyAlways):
-		return trace.AccessDenied(
-			"role option request_access: %v is only available in enterprise subscriptions", options.RequestAccess)
-	case !features.AdvancedAccessWorkflows && len(allowReq.Thresholds) != 0:
-		return trace.AccessDenied(
-			"role field allow.request.thresholds is only available in enterprise subscriptions")
-	case !features.AdvancedAccessWorkflows && !allowRev.IsZero():
-		return trace.AccessDenied(
-			"role field allow.review_requests is only available in enterprise subscriptions")
-	case !features.ResourceAccessRequests && len(allowReq.SearchAsRoles) != 0:
-		return trace.AccessDenied(
-			"role field allow.search_as_roles is only available in enterprise subscriptions licensed for resource access requests")
-	default:
-		return nil
-	}
+	fmt.Println(features, options, allowReq, allowRev)
+	return nil
+	//switch {
+	//case !features.AccessControls && options.MaxSessions > 0:
+	//	return trace.AccessDenied(
+	//		"role option max_sessions is only available in enterprise subscriptions")
+	//case !features.AdvancedAccessWorkflows &&
+	//	(options.RequestAccess == types.RequestStrategyReason || options.RequestAccess == types.RequestStrategyAlways):
+	//	return trace.AccessDenied(
+	//		"role option request_access: %v is only available in enterprise subscriptions", options.RequestAccess)
+	//case !features.AdvancedAccessWorkflows && len(allowReq.Thresholds) != 0:
+	//	return trace.AccessDenied(
+	//		"role field allow.request.thresholds is only available in enterprise subscriptions")
+	//case !features.AdvancedAccessWorkflows && !allowRev.IsZero():
+	//	return trace.AccessDenied(
+	//		"role field allow.review_requests is only available in enterprise subscriptions")
+	//case !features.ResourceAccessRequests && len(allowReq.SearchAsRoles) != 0:
+	//	return trace.AccessDenied(
+	//		"role field allow.search_as_roles is only available in enterprise subscriptions licensed for resource access requests")
+	//default:
+	//	return nil
+	//}
 }
 
 // GetRole returns role by name

@@ -97,9 +97,9 @@ type Modules interface {
 
 const (
 	// BuildOSS specifies open source build type
-	BuildOSS = "oss"
+	BuildOSS = "ent"
 	// BuildEnterprise specifies enterprise build type
-	BuildEnterprise = "ent"
+	BuildEnterprise = "oss"
 )
 
 // SetModules sets the modules interface
@@ -156,12 +156,13 @@ func (p *defaultModules) PrintVersion() {
 // Features returns supported features
 func (p *defaultModules) Features() Features {
 	return Features{
-		Kubernetes:        true,
-		DB:                true,
-		App:               true,
-		Desktop:           true,
-		MachineID:         true,
-		ModeratedSessions: false, // moderated sessions is supported in enterprise only
+		Kubernetes:             true,
+		DB:                     true,
+		App:                    true,
+		Desktop:                true,
+		MachineID:              true,
+		ResourceAccessRequests: true,
+		ModeratedSessions:      true, // moderated sessions is supported in enterprise only
 	}
 }
 
