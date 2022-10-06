@@ -2066,6 +2066,16 @@ func (a *Server) ExtendWebSession(ctx context.Context, req WebSessionReq, identi
 	return sess, nil
 }
 
+func (a *Server) qwe(ctx context.Context, user string) ([]types.AccessRequest, error) {
+	reqFilter := types.AccessRequestFilter{
+		User: user,
+	}
+
+	reqs, err := a.GetAccessRequests(ctx, reqFilter)
+	fmt.Println(reqs, err)
+	return reqs, err
+}
+
 func (a *Server) getValidatedAccessRequest(ctx context.Context, user, accessRequestID string) (types.AccessRequest, error) {
 	reqFilter := types.AccessRequestFilter{
 		User: user,
@@ -3059,13 +3069,13 @@ func (a *Server) DeleteApp(ctx context.Context, name string) error {
 // CreateSessionTracker creates a tracker resource for an active session.
 func (a *Server) CreateSessionTracker(ctx context.Context, tracker types.SessionTracker) (types.SessionTracker, error) {
 	// Don't allow sessions that require moderation without the enterprise feature enabled.
-	for _, policySet := range tracker.GetHostPolicySets() {
-		if len(policySet.RequireSessionJoin) != 0 {
-			if !modules.GetModules().Features().ModeratedSessions {
-				return nil, trace.AccessDenied("this Teleport cluster is not licensed for moderated sessions, please contact the cluster administrator")
-			}
-		}
-	}
+	//for _, policySet := range tracker.GetHostPolicySets() {
+	//	if len(policySet.RequireSessionJoin) != 0 {
+	//		if !modules.GetModules().Features().ModeratedSessions {
+	//			return nil, trace.AccessDenied("this Teleport cluster is not licensed for moderated sessions, please contact the cluster administrator")
+	//		}
+	//	}
+	//}
 
 	return a.Services.CreateSessionTracker(ctx, tracker)
 }

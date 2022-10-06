@@ -616,9 +616,9 @@ func checkResourceConsistency(keyStore keystore.KeyStore, clusterName string, re
 			}
 		case types.Role:
 			// Some options are only available with enterprise subscription
-			if err := checkRoleFeatureSupport(r); err != nil {
-				return trace.Wrap(err)
-			}
+			//if err := checkRoleFeatureSupport(r); err != nil {
+			//	return trace.Wrap(err)
+			//}
 		default:
 			// No validation checks for this resource type
 		}

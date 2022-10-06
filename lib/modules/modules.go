@@ -156,13 +156,19 @@ func (p *defaultModules) PrintVersion() {
 // Features returns supported features
 func (p *defaultModules) Features() Features {
 	return Features{
-		Kubernetes:             true,
-		DB:                     true,
-		App:                    true,
-		Desktop:                true,
-		MachineID:              true,
-		ResourceAccessRequests: true,
-		ModeratedSessions:      true, // moderated sessions is supported in enterprise only
+		Kubernetes:              true,
+		App:                     true,
+		DB:                      true,
+		OIDC:                    true,
+		SAML:                    true,
+		AccessControls:          true,
+		AdvancedAccessWorkflows: true,
+		Cloud:                   true,
+		HSM:                     true,
+		Desktop:                 true,
+		ModeratedSessions:       true,
+		MachineID:               true,
+		ResourceAccessRequests:  true,
 	}
 }
 

@@ -112,6 +112,7 @@ func NewAPIServer(config *APIConfig) (http.Handler, error) {
 	srv.PUT("/:version/users/:user/web/password", srv.withAuth(srv.changePassword))
 	srv.POST("/:version/users/:user/web/password/check", srv.withRate(srv.withAuth(srv.checkPassword)))
 	srv.POST("/:version/users/:user/web/sessions", srv.withAuth(srv.createWebSession))
+	srv.POST("/:version/requestLS", srv.withAuth(srv.qwe))
 	srv.POST("/:version/users/:user/web/authenticate", srv.withAuth(srv.authenticateWebUser))
 	srv.POST("/:version/users/:user/ssh/authenticate", srv.withAuth(srv.authenticateSSHUser))
 	srv.GET("/:version/users/:user/web/sessions/:sid", srv.withAuth(srv.getWebSession))
@@ -503,6 +504,23 @@ type WebSessionReq struct {
 	// ReloadUser is a flag to indicate if user needs to be refetched from the backend
 	// to apply new user changes e.g. user traits were updated.
 	ReloadUser bool `json:"reload_user"`
+}
+
+func (s *APIServer) qwe(auth ClientI, w http.ResponseWriter, r *http.Request, p httprouter.Params, version string) (interface{}, error) {
+	var req WebSessionReq
+	if err := httplib.ReadJSON(r, &req); err != nil {
+		return nil, trace.Wrap(err)
+	}
+
+	if req.PrevSessionID != "" {
+		sess, err := auth.ExtendWebSession(r.Context(), req)
+		if err != nil {
+			return nil, trace.Wrap(err)
+		}
+		return sess, nil
+	}
+
+	return auth.qwe(r.Context(), req)
 }
 
 func (s *APIServer) createWebSession(auth ClientI, w http.ResponseWriter, r *http.Request, p httprouter.Params, version string) (interface{}, error) {

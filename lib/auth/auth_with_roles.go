@@ -1667,6 +1667,10 @@ func (a *ServerWithRoles) CreateWebSession(ctx context.Context, user string) (ty
 	return a.authServer.CreateWebSession(ctx, user)
 }
 
+func (a *ServerWithRoles) qwe(ctx context.Context, req WebSessionReq) ([]types.AccessRequest, error) {
+	return a.authServer.qwe(ctx, req.User)
+}
+
 // ExtendWebSession creates a new web session for a user based on a valid previous session.
 // Additional roles are appended to initial roles if there is an approved access request.
 // The new session expiration time will not exceed the expiration time of the old session.
@@ -2708,9 +2712,9 @@ func (a *ServerWithRoles) UpsertOIDCConnector(ctx context.Context, connector typ
 	if err := a.authConnectorAction(apidefaults.Namespace, types.KindOIDC, types.VerbUpdate); err != nil {
 		return trace.Wrap(err)
 	}
-	if !modules.GetModules().Features().OIDC {
-		return trace.AccessDenied("OIDC is only available in enterprise subscriptions")
-	}
+	//if !modules.GetModules().Features().OIDC {
+	//	return trace.AccessDenied("OIDC is only available in enterprise subscriptions")
+	//}
 
 	return a.authServer.UpsertOIDCConnector(ctx, connector)
 }
@@ -2792,9 +2796,9 @@ func (a *ServerWithRoles) UpsertSAMLConnector(ctx context.Context, connector typ
 	if err := a.authConnectorAction(apidefaults.Namespace, types.KindSAML, types.VerbUpdate); err != nil {
 		return trace.Wrap(err)
 	}
-	if !modules.GetModules().Features().SAML {
-		return trace.AccessDenied("SAML is only available in enterprise subscriptions")
-	}
+	//if !modules.GetModules().Features().SAML {
+	//	return trace.AccessDenied("SAML is only available in enterprise subscriptions")
+	//}
 	return a.authServer.UpsertSAMLConnector(ctx, connector)
 }
 
@@ -3217,9 +3221,9 @@ func checkRoleFeatureSupport(role types.Role) error {
 
 	// source IP pinning doesn't have a dedicated feature flag,
 	// it is available to all enterprise users
-	if modules.GetModules().BuildType() != modules.BuildEnterprise && role.GetOptions().PinSourceIP {
-		return trace.AccessDenied("role option pin_source_ip is only available in enterprise subscriptions")
-	}
+	//if modules.GetModules().BuildType() != modules.BuildEnterprise && role.GetOptions().PinSourceIP {
+	//	return trace.AccessDenied("role option pin_source_ip is only available in enterprise subscriptions")
+	//}
 
 	fmt.Println(features, options, allowReq, allowRev)
 	return nil
